@@ -7,6 +7,43 @@
 
 import Foundation
 
+private struct Endpoints {
+	static let baseURL = "https://cdn.contentful.com/"
+}
+
+private struct Credentials {
+	static let space = "kk2bw5ojx476"
+	static let environment = "master"
+	static let accessToken = "7ac531648a1b5e1dab6c18b0979f822a5aad0fe5f1109829b8a197eb2be4b84c"
+}
+
 class RecipesAPIManager {
-	
+
+	// MARK: - Private Properties
+
+	private let urlSession = URLSession(configuration: .default)
+
+	// MARK: - Constants
+
+	private let assetsURLString = Endpoints.baseURL + "spaces/" + Credentials.space +
+		"/environments/" + Credentials.environment + "/assets"
+
+	// MARK: - Functions
+
+	func getRecipes() {
+		guard var urlComponents = URLComponents(string: assetsURLString) else {
+			return
+		}
+
+		urlComponents.query = "access_token=" + Credentials.accessToken
+
+		guard let url = urlComponents.url else {
+			return
+		}
+
+		let dataTask = urlSession.dataTask(with: url,
+									   completionHandler: { [weak self] data, response, error in
+									   })
+		dataTask.resume()
+	}
 }

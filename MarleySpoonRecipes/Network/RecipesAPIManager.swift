@@ -19,18 +19,27 @@ private struct Credentials {
 
 class RecipesAPIManager {
 
+	enum APIError: Error {
+		case parseError
+	}
+
+	// MARK: - Properties
+
+	static let sharedInstance = RecipesAPIManager()
+
 	// MARK: - Private Properties
 
 	private let urlSession = URLSession(configuration: .default)
 
 	// MARK: - Constants
 
+	private let okStatusCode = 200
 	private let assetsURLString = Endpoints.baseURL + "spaces/" + Credentials.space +
 		"/environments/" + Credentials.environment + "/assets"
 
 	// MARK: - Functions
 
-	func getRecipes() {
+	func getRecipes(completion: @escaping (Result<Data, APIError>) -> ()) {
 		guard var urlComponents = URLComponents(string: assetsURLString) else {
 			return
 		}
@@ -43,6 +52,14 @@ class RecipesAPIManager {
 
 		let dataTask = urlSession.dataTask(with: url,
 									   completionHandler: { [weak self] data, response, error in
+										guard let aResponse = response as? HTTPURLResponse,
+											  aResponse.statusCode == self?.okStatusCode,
+											  let aData = data else {
+											completion(.failure(.parseError))
+											return
+										}
+
+										completion(.success(aData))
 									   })
 		dataTask.resume()
 	}

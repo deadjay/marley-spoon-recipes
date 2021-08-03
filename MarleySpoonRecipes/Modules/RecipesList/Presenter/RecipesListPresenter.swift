@@ -17,6 +17,7 @@ class RecipesListPresenter: RecipesListPresenterProtocol {
 	weak var view: RecipesListViewProtocol?
 
 	private let recipeService: RecipeService
+	private var recipesList: PresentedRecipesList?
 
 	init(recipeService: RecipeService) {
 		self.recipeService = recipeService
@@ -30,8 +31,10 @@ class RecipesListPresenter: RecipesListPresenterProtocol {
 
 extension RecipesListPresenter: RecipeServiceDelegate {
 	func didReceive(_ recipes: [PresentedRecipe]) {
-		let recipesWithIDDictionary = Dictionary(uniqueKeysWithValues: recipes.map{ ($0.id, $0) })
-		view?.display(recipesWithIDDictionary)
+		let aRecipesList = PresentedRecipesList(recipes: recipes)
+		recipesList = aRecipesList
+
+		view?.display(aRecipesList)
 
 		for recipe in recipes {
 			recipeService.getImage(for: recipe.imageURL, recipeID: recipe.id)

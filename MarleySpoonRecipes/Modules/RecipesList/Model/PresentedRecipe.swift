@@ -17,5 +17,3 @@ struct PresentedRecipe {
 	var tags: [String]
 	var image: UIImage?
 }
-
-

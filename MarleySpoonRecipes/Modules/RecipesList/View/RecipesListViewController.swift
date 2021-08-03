@@ -11,7 +11,7 @@ import PureLayout
 protocol RecipesListViewProtocol: AnyObject {
 	func showLoadingState()
 	func showErrorState(with error: String)
-	func display(_ recipes: [String: PresentedRecipe])
+	func display(_ recipesList: PresentedRecipesList)
 	func display(_ image: UIImage, for recipeID: String)
 }
 
@@ -20,7 +20,7 @@ class RecipesListViewController: UIViewController {
 	// MARK: - Private Properties
 
 	private let presenter: RecipesListPresenterProtocol
-	private var recipes = [String: PresentedRecipe]()
+	private var recipesList: PresentedRecipesList?
 
 	private let collectionViewLayout: UICollectionViewFlowLayout
 	private let collectionView: UICollectionView
@@ -52,6 +52,13 @@ class RecipesListViewController: UIViewController {
 		presenter.loadAllRecipes()
 	}
 
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+
+		let width = collectionView.bounds.width / 2 - 20
+		collectionViewLayout.itemSize = CGSize(width: width, height: width)
+	}
+
 	// MARK: - Private Functions
 
 	private func setupLayout() {
@@ -62,6 +69,15 @@ class RecipesListViewController: UIViewController {
 		collectionView.backgroundColor = .themeGray
 		collectionView.dataSource = self
 		collectionView.delegate = self
+
+		collectionView.alwaysBounceVertical = true
+		collectionView.showsVerticalScrollIndicator = true
+
+		collectionViewLayout.estimatedItemSize = .zero
+		collectionViewLayout.minimumInteritemSpacing = 10
+
+		let cellNib = RecipesListCollectionViewCell.loadNib()
+		collectionView.register(cellNib, forCellWithReuseIdentifier: RecipesListCollectionViewCell.reuseIdentifier)
 	}
 }
 
@@ -73,13 +89,16 @@ extension RecipesListViewController: RecipesListViewProtocol {
 	func showErrorState(with error: String) {
 
 	}
-	func display(_ recipes: [String: PresentedRecipe]) {
-		self.recipes = recipes
+
+	func display(_ recipesList: PresentedRecipesList) {
+		self.recipesList = recipesList
 		collectionView.reloadData()
 	}
 
 	func display(_ image: UIImage, for recipeID: String) {
-		recipes[recipeID]?.image = image
+		recipesList?.set(image: image, for: recipeID)
+
+		collectionView.reloadData()
 	}
 }
 
@@ -89,17 +108,37 @@ extension RecipesListViewController: UICollectionViewDataSource {
 	}
 
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return recipes.count
+		return recipesList?.recipes.count ?? 0
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reuseID", for: indexPath)
+		var cell: RecipesListCollectionViewCell?
 
-		cell.backgroundColor = .themeYellow
-		return cell
+		if let dequeudCell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipesListCollectionViewCell.reuseIdentifier,
+																for: indexPath) as? RecipesListCollectionViewCell {
+			cell = dequeudCell
+		} else {
+			cell = RecipesListCollectionViewCell.loadFromNib() as? RecipesListCollectionViewCell
+		}
+
+		if let recipe = recipesList?.recipe(at: indexPath.row) {
+			cell?.configure(with: recipe)
+		}
+
+		return cell ?? UICollectionViewCell()
 	}
 }
 
 extension RecipesListViewController: UICollectionViewDelegate {
 
+}
+
+extension RecipesListViewController: UICollectionViewDelegateFlowLayout {
+	override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
+		return CGSize(width: collectionView.bounds.width - 15, height: 200)
+	}
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+		return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+	}
 }

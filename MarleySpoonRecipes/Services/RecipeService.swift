@@ -35,8 +35,10 @@ class RecipeService {
 
 	private func obtain(_ apiError: APIError) {
 		switch apiError {
-		case .parseError:
-			delegate?.didReceiveError(errorText: "Network error")
+		case .parse:
+			delegate?.didReceiveError(errorText: "Parse error")
+		case .server(let errorText):
+		delegate?.didReceiveError(errorText: errorText)
 		}
 	}
 

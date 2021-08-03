@@ -8,7 +8,9 @@
 import Foundation
 
 enum APIError: Error {
-	case parseError
+	case parse
+	case server(String)
+
 }
 
 typealias APIResult = (Result<Data, APIError>) -> ()
@@ -40,13 +42,13 @@ class APIManager: APIManagerProtocol {
 	// MARK: - Constants
 
 	private let okStatusCode = 200
-	private let assetsURLString = Endpoints.baseURL + "spaces/" + Credentials.space +
+	private let entriesURLString = Endpoints.baseURL + "spaces/" + Credentials.space +
 		"/environments/" + Credentials.environment + "/entries"
 
 	// MARK: - Functions
 
 	func getRecipes(completion: @escaping APIResult) {
-		guard var urlComponents = URLComponents(string: assetsURLString) else {
+		guard var urlComponents = URLComponents(string: entriesURLString) else {
 			return
 		}
 
@@ -58,15 +60,26 @@ class APIManager: APIManagerProtocol {
 
 		let dataTask = urlSession.dataTask(with: url,
 									   completionHandler: { [weak self] data, response, error in
-										guard let aResponse = response as? HTTPURLResponse,
-											  aResponse.statusCode == self?.okStatusCode,
-											  let aData = data else {
-											completion(.failure(.parseError))
+										guard error == nil else {
+											self?.handle(.failure(.server(error?.localizedDescription ?? "")), completion)
 											return
 										}
 
-										completion(.success(aData))
+										guard let aResponse = response as? HTTPURLResponse,
+											  aResponse.statusCode == self?.okStatusCode,
+											  let aData = data else {
+											self?.handle(.failure(.parse), completion)
+											return
+										}
+
+										self?.handle(.success(aData), completion)
 									   })
 		dataTask.resume()
+	}
+
+	private func handle(_ result: Result<Data, APIError>, _ completion: @escaping APIResult) {
+		DispatchQueue.main.async {
+			completion(result)
+		}
 	}
 }

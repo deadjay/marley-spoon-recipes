@@ -28,13 +28,8 @@ class RecipesListPresenter: RecipesListPresenterProtocol {
 }
 
 extension RecipesListPresenter: RecipeServiceDelegate {
-	func didReceive(recipes: [Fields], tags: [Item], chefs: [Item], assets: [Asset]) {
+	func didReceive(_ recipes: [PresentedRecipe]) {
 		
-	}
-
-	func didReceive(recipes: [Fields], assets: [Asset]) {
-		var dictionaryAssets = [String: String]()
-
 	}
 
 	func didReceiveError(errorText: String) {

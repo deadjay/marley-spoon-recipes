@@ -8,7 +8,7 @@
 import Foundation
 
 protocol RecipeServiceDelegate: AnyObject {
-	func didReceive(recipes: [Fields], tags: [Item], chefs: [Item], assets: [Asset])
+	func didReceive(_ recipes: [PresentedRecipe])
 	func didReceiveError(errorText: String)
 }
 
@@ -49,10 +49,17 @@ class RecipeService {
 			return
 		}
 
-		let photosURLDictionary = Dictionary(uniqueKeysWithValues: result.assets.map{ ($0.id, $0.url) })
-		var allItemsDictionary = [String: PresentedItem]()
-		for item in result.items {
-			if let presentedItem = PresentedItem(contentTypeID: item.contentType.sys.id,
+		let itemServiceModelsDictionary = convertToItemServiceModels(assets: result.assets, items: result.items)
+		let presentedRecipes = convertToPresentedRecipes(assets: result.assets, itemServiceModelsDictionary: itemServiceModelsDictionary)
+
+		delegate?.didReceive(presentedRecipes)
+	}
+
+	private func convertToItemServiceModels(assets: [Asset], items: [Item]) -> [String: ItemServiceModel] {
+		var itemServiceModelsDictionary = [String: ItemServiceModel]()
+
+		for item in items {
+			if let itemServiceModel = ItemServiceModel(contentTypeID: item.contentType.sys.id,
 												 id: item.id,
 												 title: item.fields.title ?? "",
 												 name: item.fields.name ?? "",
@@ -60,20 +67,30 @@ class RecipeService {
 												 photoID: item.fields.photo?.sys.id ?? "",
 												 chefID: item.fields.chef?.sys.id ?? "",
 												 tagsIDs: item.fields.tags?.compactMap { $0.sys.id } ?? []) {
-				allItemsDictionary[presentedItem.id] = presentedItem
+				itemServiceModelsDictionary[itemServiceModel.id] = itemServiceModel
 			}
 		}
 
-		for value in allItemsDictionary.values {
+		return itemServiceModelsDictionary
+	}
+
+	private func convertToPresentedRecipes(assets: [Asset],
+										   itemServiceModelsDictionary: [String: ItemServiceModel]) -> [PresentedRecipe] {
+		var presentedRecipes = [PresentedRecipe]()
+		let photosURLDictionary = Dictionary(uniqueKeysWithValues: assets.map { ($0.id, $0.url) })
+
+		for value in itemServiceModelsDictionary.values {
 			if value.contentType == .recipe {
+				let tags = value.tagsIDs.map { itemServiceModelsDictionary[$0]?.name ?? "" }
 				let presentedRecipe = PresentedRecipe(title: value.title,
 													  description: value.description,
 													  imageURL: photosURLDictionary[value.photoID] ?? "",
-													  chefName: allItemsDictionary[value.chefID]?.name ?? "",
-													  tags: value.tagsIDs.map { allItemsDictionary[$0]?.name ?? "" })
+													  chefName: itemServiceModelsDictionary[value.chefID]?.name ?? "",
+													  tags: tags)
+				presentedRecipes.append(presentedRecipe)
 			}
 		}
 
-//		delegate?.didReceive(recipes: [], tags: tagItems, chefs: chefItems, assets: [])
+		return presentedRecipes
 	}
 }

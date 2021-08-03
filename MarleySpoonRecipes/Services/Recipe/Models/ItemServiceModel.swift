@@ -1,5 +1,5 @@
 //
-//  PresentedItem.swift
+//  ItemServiceModel.swift
 //  MarleySpoonRecipes
 //
 //  Created by Artem Alekseev on 03.08.2021.
@@ -13,7 +13,7 @@ enum ContentType: String {
 	case tag
 }
 
-struct PresentedItem {
+struct ItemServiceModel {
 	let contentType: ContentType
 	let id: String
 

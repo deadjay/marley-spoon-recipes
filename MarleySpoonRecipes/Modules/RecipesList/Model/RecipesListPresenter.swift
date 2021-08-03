@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol RecipesListPresenterProtocol {
 	func loadAllRecipes()
@@ -29,7 +30,14 @@ class RecipesListPresenter: RecipesListPresenterProtocol {
 
 extension RecipesListPresenter: RecipeServiceDelegate {
 	func didReceive(_ recipes: [PresentedRecipe]) {
-		
+		print(recipes)
+
+		for recipe in recipes {
+			recipeService.getImage(for: recipe.imageURL, recipeID: recipe.id)
+		}
+	}
+
+	func didReceive(_ image: UIImage, for recipeID: String) {
 	}
 
 	func didReceiveError(errorText: String) {

@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import UIKit
 
 protocol RecipeServiceDelegate: AnyObject {
 	func didReceive(_ recipes: [PresentedRecipe])
+	func didReceive(_ image: UIImage, for recipeID: String)
+
 	func didReceiveError(errorText: String)
 }
 
@@ -33,18 +36,33 @@ class RecipeService {
 		}
 	}
 
+	func getImage(for urlString: String, recipeID: String) {
+		apiManager.loadData(for: urlString) { [weak self] result in
+			switch result {
+			case .success(let data):
+				self?.parse(data, recipeID: recipeID)
+			case .failure(let error):
+				self?.obtain(error)
+			}
+		}
+	}
+
+	// MARK: - Private Functions
+
 	private func obtain(_ apiError: APIError) {
 		switch apiError {
 		case .parse:
 			delegate?.didReceiveError(errorText: "Parse error")
 		case .server(let errorText):
-		delegate?.didReceiveError(errorText: errorText)
+			delegate?.didReceiveError(errorText: errorText)
+		case .wrongRequest:
+			delegate?.didReceiveError(errorText: "Wrong request")
 		}
 	}
 
-	private func parse(_ data: Data) {
+	private func parse(_ plainResultData: Data) {
 		let decoder = JSONDecoder()
-		guard let result = try? decoder.decode(PlainResult.self, from: data) else {
+		guard let result = try? decoder.decode(PlainResult.self, from: plainResultData) else {
 			delegate?.didReceiveError(errorText: "Data error")
 			return
 		}
@@ -53,6 +71,15 @@ class RecipeService {
 		let presentedRecipes = convertToPresentedRecipes(assets: result.assets, itemServiceModelsDictionary: itemServiceModelsDictionary)
 
 		delegate?.didReceive(presentedRecipes)
+	}
+
+	private func parse(_ imageData: Data, recipeID: String) {
+		guard let image = UIImage(data: imageData) else {
+			delegate?.didReceiveError(errorText: "Data error")
+			return
+		}
+
+		delegate?.didReceive(image, for: recipeID)
 	}
 
 	private func convertToItemServiceModels(assets: [Asset], items: [Item]) -> [String: ItemServiceModel] {
@@ -81,11 +108,15 @@ class RecipeService {
 
 		for value in itemServiceModelsDictionary.values {
 			if value.contentType == .recipe {
+				let imageURL = "https:" + (photosURLDictionary[value.photoID] ?? "")
+				let chefName = itemServiceModelsDictionary[value.chefID]?.name ?? ""
 				let tags = value.tagsIDs.map { itemServiceModelsDictionary[$0]?.name ?? "" }
-				let presentedRecipe = PresentedRecipe(title: value.title,
+
+				let presentedRecipe = PresentedRecipe(id: value.id,
+													  title: value.title,
 													  description: value.description,
-													  imageURL: photosURLDictionary[value.photoID] ?? "",
-													  chefName: itemServiceModelsDictionary[value.chefID]?.name ?? "",
+													  imageURL: imageURL,
+													  chefName: chefName,
 													  tags: tags)
 				presentedRecipes.append(presentedRecipe)
 			}

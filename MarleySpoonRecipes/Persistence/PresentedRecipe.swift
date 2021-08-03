@@ -8,6 +8,7 @@
 import Foundation
 
 struct PresentedRecipe {
+	var id: String
 	var title: String
 	var description: String
 	var imageURL: String

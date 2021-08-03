@@ -16,12 +16,12 @@ class RecipesListPresenter: RecipesListPresenterProtocol {
 
 	weak var view: RecipesListViewProtocol?
 
-	private let recipeService: RecipeService
+	private var recipeService: RecipeServiceProtocol
 	private var recipesList: PresentedRecipesList?
 
-	init(recipeService: RecipeService) {
+	init(recipeService: RecipeServiceProtocol) {
 		self.recipeService = recipeService
-		recipeService.delegate = self
+		self.recipeService.delegate = self
 	}
 
 	func loadAllRecipes() {

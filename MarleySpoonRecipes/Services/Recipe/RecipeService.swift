@@ -8,6 +8,13 @@
 import Foundation
 import UIKit
 
+protocol RecipeServiceProtocol {
+	func getAllRecipes()
+	func getImage(for urlString: String, recipeID: String)
+
+	var delegate: RecipeServiceDelegate? { get set }
+}
+
 protocol RecipeServiceDelegate: AnyObject {
 	func didReceive(_ recipes: [PresentedRecipe])
 	func didReceive(_ image: UIImage, for recipeID: String)
@@ -15,7 +22,7 @@ protocol RecipeServiceDelegate: AnyObject {
 	func didReceiveError(errorText: String)
 }
 
-class RecipeService {
+class RecipeService: RecipeServiceProtocol {
 
 	// MARK: - Properties
 

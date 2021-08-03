@@ -18,8 +18,8 @@ class RecipesNavigationController: UINavigationController {
 
 	// MARK: - Construction
 
-	override init(rootViewController: UIViewController) {
-		super.init(rootViewController: rootViewController)
+	init() {
+		super.init(nibName: nil, bundle: nil)
 
 		navigationBar.topItem?.title = "Marley Spoon Recipes"
 		navigationBar.isTranslucent = false
@@ -27,7 +27,13 @@ class RecipesNavigationController: UINavigationController {
 		navigationBar.tintColor = .themeBlack
 		navigationBar.shadowImage = UIImage()
 		navigationBar.barTintColor = .themeWhite
-		navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.themeBlack]
+		navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.themeBlack,
+											 NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15)]
+	}
+
+	override init(rootViewController: UIViewController) {
+		super.init(rootViewController: rootViewController)
+
 	}
 
 	required init?(coder aDecoder: NSCoder) {

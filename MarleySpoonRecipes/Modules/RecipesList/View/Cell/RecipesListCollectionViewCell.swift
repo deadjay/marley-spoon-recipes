@@ -49,5 +49,4 @@ class RecipesListCollectionViewCell: UICollectionViewCell, ReusableView, NibLoad
 		titleLabel.text = recipe.title
 		imageView.image = recipe.image
 	}
-
 }

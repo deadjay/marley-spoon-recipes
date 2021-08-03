@@ -25,6 +25,7 @@ class RecipesListPresenter: RecipesListPresenterProtocol {
 	}
 
 	func loadAllRecipes() {
+		view?.showLoadingState()
 		recipeService.getAllRecipes()
 	}
 }

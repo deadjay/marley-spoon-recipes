@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 class DetailRecipeBuilder {
-
 	private let presentedRecipe: PresentedRecipe
 
 	init(presentedRecipe: PresentedRecipe) {

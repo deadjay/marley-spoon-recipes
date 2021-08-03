@@ -60,12 +60,11 @@ class APIManager: APIManagerProtocol {
 			callback(.failure(.wrongRequest))
 			return
 		}
-
-		let dataTask = urlSession.dataTask(with: url,
-										   completionHandler: { [weak self] data, response, error in
-											self?.completionHandler(data, response, error, callback)
-										   })
-		dataTask.resume()
+		
+		urlSession.dataTask(with: url,
+							completionHandler: { [weak self] data, response, error in
+								self?.completionHandler(data, response, error, callback)
+							}).resume()
 	}
 
 	func loadData(for urlString: String, callback: @escaping APICallback) {
@@ -74,11 +73,10 @@ class APIManager: APIManagerProtocol {
 			return
 		}
 
-		let dataTask = urlSession.dataTask(with: url,
-										   completionHandler: { [weak self] data, response, error in
-											self?.completionHandler(data, response, error, callback)
-										   })
-		dataTask.resume()
+		urlSession.dataTask(with: url,
+							completionHandler: { [weak self] data, response, error in
+								self?.completionHandler(data, response, error, callback)
+							}).resume()
 	}
 
 	// MARK: - Private Functions

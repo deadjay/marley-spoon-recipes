@@ -11,12 +11,18 @@ import UIKit
 class DetailRecipeViewController: UIViewController {
 	private let scrollView: UIScrollView
 	private let presentedRecipe: PresentedRecipe
+	private let detailRecipeView: DetailRecipeView
 
 	init(presentedRecipe: PresentedRecipe) {
 		self.scrollView = UIScrollView()
 		self.presentedRecipe = presentedRecipe
+		self.detailRecipeView = DetailRecipeView.loadFromNib()
 
 		super.init(nibName: nil, bundle: nil)
+
+		view.addSubview(scrollView)
+		scrollView.addSubview(detailRecipeView)
+		detailRecipeView.configure(for: presentedRecipe)
 	}
 
 	required init?(coder: NSCoder) {
@@ -28,10 +34,15 @@ class DetailRecipeViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		
+		title = "Recipe Details"
+		view.backgroundColor = .themeGray
 	}
 
 	// MARK: Functions
+
+	private func setupLayout() {
+
+	}
 
 
 }

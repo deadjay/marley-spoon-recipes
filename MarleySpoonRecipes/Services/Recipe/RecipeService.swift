@@ -17,13 +17,21 @@ protocol RecipeServiceDelegate: AnyObject {
 
 class RecipeService {
 
+	// MARK: - Properties
+
 	weak var delegate: RecipeServiceDelegate?
 
+	// MARK: - Private Properties
+
 	private let apiManager: APIManagerProtocol
+
+	// MARK: - Construction
 
 	init(apiManager: APIManagerProtocol) {
 		self.apiManager = apiManager
 	}
+
+	// MARK: - Functions
 
 	func getAllRecipes() {
 		apiManager.getRecipes { [weak self] result in

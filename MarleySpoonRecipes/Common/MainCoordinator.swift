@@ -9,11 +9,18 @@ import Foundation
 import UIKit
 
 class MainCoordinator {
+
+	// MARK: - Properties
+
 	var navigationController: UINavigationController
+
+	// MARK: - Construction
 
 	init(navigationController: UINavigationController) {
 		self.navigationController = navigationController
 	}
+
+	// MARK: - Functions
 
 	func start() {
 		if let viewController = RecipesListBuilder().build() as? RecipesListViewController {

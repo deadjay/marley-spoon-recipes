@@ -16,12 +16,7 @@ class RecipesNavigationController: UINavigationController {
 		return .darkContent
 	}
 
-	// MARK: - Construction
-
-	init() {
-		super.init(nibName: nil, bundle: nil)
-
-	}
+	// MARK: - ViewController Lifecycle
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -33,14 +28,5 @@ class RecipesNavigationController: UINavigationController {
 		navigationBar.barTintColor = .themeWhite
 		navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.themeBlack,
 											 NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15)]
-	}
-
-	override init(rootViewController: UIViewController) {
-		super.init(rootViewController: rootViewController)
-
-	}
-
-	required init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
 	}
 }

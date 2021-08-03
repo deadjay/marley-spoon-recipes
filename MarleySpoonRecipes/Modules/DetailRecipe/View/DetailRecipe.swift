@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class DetailRecipeView: UIView, NibLoadableView {
+class DetailRecipe: UIView, NibLoadableView {
 
 	@IBOutlet weak var imageView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
@@ -18,27 +18,40 @@ class DetailRecipeView: UIView, NibLoadableView {
 	@IBOutlet weak var tagsStackView: UIStackView!
 
 	func configure(for presentedRecipe: PresentedRecipe) {
+		backgroundColor = .themeYellow
+
 		imageView.image = presentedRecipe.image
 		titleLabel.text = presentedRecipe.title
 		chefNamePrefixLabel.text = "by: "
+		chefNameLabel.text = presentedRecipe.chefName
 		descriptionLabel.text = presentedRecipe.description
+
+		imageView.contentMode = .scaleAspectFit
+
+		titleLabel.numberOfLines = 0
+		titleLabel.lineBreakMode = .byWordWrapping
+
+		descriptionLabel.numberOfLines = 0
+		descriptionLabel.lineBreakMode = .byWordWrapping
+
+		tagsStackView.backgroundColor = .themeGray
 
 		for tag in presentedRecipe.tags {
 			let label = UILabel()
-			label.textColor = .themeBlack
+			label.textColor = .themeGreen
 			label.text = tag
 			tagsStackView.addArrangedSubview(label)
 		}
 	}
-
-	override func awakeFromNib() {
-		super.awakeFromNib()
-
-	}
-
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
+//
+//	override func awakeFromNib() {
+//		super.awakeFromNib()
+//
+//	}
+//
+//	required init?(coder: NSCoder) {
+//		super.init(coder: coder)
+//	}
 
 	private func setupLayout() {
 

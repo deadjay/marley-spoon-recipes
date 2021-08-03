@@ -35,7 +35,7 @@ class RecipesAPIManager {
 
 	private let okStatusCode = 200
 	private let assetsURLString = Endpoints.baseURL + "spaces/" + Credentials.space +
-		"/environments/" + Credentials.environment + "/assets"
+		"/environments/" + Credentials.environment + "/entries"
 
 	// MARK: - Functions
 

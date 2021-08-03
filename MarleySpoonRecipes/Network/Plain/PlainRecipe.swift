@@ -8,8 +8,8 @@
 import Foundation
 
 struct PlainRecipe: Decodable {
-	var title: String
-	var photo: SysContainer
-	var description: String
-	var tags: [SysContainer]
+	var title: String?
+	var photo: SysContainer?
+	var description: String?
+	var tags: [SysContainer]?
 }

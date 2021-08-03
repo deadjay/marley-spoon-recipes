@@ -12,9 +12,10 @@ class RecipesListBuilder {
 	func build() -> UIViewController {
 		let recipesService = RecipeService(apiManager: APIManager.sharedInstance)
 		let presenter = RecipesListPresenter(recipeService: recipesService)
-		let view = RecipesListViewController(presenter: presenter)
-		presenter.view = view
+		let viewController = RecipesListViewController(presenter: presenter)
+		let navigationController = RecipesNavigationController(rootViewController: viewController)
+		presenter.view = viewController
 
-		return view
+		return navigationController
 	}
 }

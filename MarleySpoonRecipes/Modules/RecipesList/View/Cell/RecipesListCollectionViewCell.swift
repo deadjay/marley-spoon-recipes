@@ -22,13 +22,13 @@ class RecipesListCollectionViewCell: UICollectionViewCell, ReusableView, NibLoad
 		super.awakeFromNib()
 
 		bottomContainerView.backgroundColor = .themeYellow
-		titleLabel.font = UIFont.boldSystemFont(ofSize: 12)
+		titleLabel.font = UIFont.systemFont(ofSize: 12)
 		titleLabel.textColor = .themeBlack
 		titleLabel.numberOfLines = 0
 		titleLabel.lineBreakMode = .byWordWrapping
 		titleLabel.textAlignment = .center
 
-		layer.cornerRadius = 6
+		layer.cornerRadius = 8
 		clipsToBounds = true
 
 		imageView.contentMode = .scaleAspectFit

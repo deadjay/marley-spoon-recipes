@@ -10,6 +10,8 @@ import UIKit
 
 class DetailRecipe: UIView, NibLoadableView {
 
+	// MARK: - IBOutlets
+
 	@IBOutlet weak var imageView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var chefNamePrefixLabel: UILabel!
@@ -17,6 +19,25 @@ class DetailRecipe: UIView, NibLoadableView {
 	@IBOutlet weak var descriptionLabel: UILabel!
 	@IBOutlet weak var tagsStackView: UIStackView!
 	@IBOutlet weak var descriptionBackgrundView: UIView!
+
+	// MARK: - UIResponder Overrides
+
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		super.touchesBegan(touches, with: event)
+		shrink(down: true)
+	}
+
+	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+		super.touchesEnded(touches, with: event)
+		shrink(down: false)
+	}
+
+	override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+		super.touchesCancelled(touches, with: event)
+		shrink(down: false)
+	}
+
+	// MARK: - Functions
 
 	func configure(for presentedRecipe: PresentedRecipe) {
 		backgroundColor = .themeYellow

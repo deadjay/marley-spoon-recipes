@@ -11,7 +11,7 @@ import UIKit
 extension UIView {
 	func shrink(down: Bool) {
 		UIView.animate(withDuration: 0.2, delay: 0.0, options: [.allowUserInteraction]) {
-			self.transform = down ? CGAffineTransform(scaleX: 0.95, y: 0.95) : .identity
+			self.transform = down ? CGAffineTransform(scaleX: 0.97, y: 0.97) : .identity
 		}
 	}
 }

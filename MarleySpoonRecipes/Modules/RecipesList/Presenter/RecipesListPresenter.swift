@@ -30,7 +30,8 @@ class RecipesListPresenter: RecipesListPresenterProtocol {
 
 extension RecipesListPresenter: RecipeServiceDelegate {
 	func didReceive(_ recipes: [PresentedRecipe]) {
-		print(recipes)
+		let recipesWithIDDictionary = Dictionary(uniqueKeysWithValues: recipes.map{ ($0.id, $0) })
+		view?.display(recipesWithIDDictionary)
 
 		for recipe in recipes {
 			recipeService.getImage(for: recipe.imageURL, recipeID: recipe.id)
@@ -38,6 +39,7 @@ extension RecipesListPresenter: RecipeServiceDelegate {
 	}
 
 	func didReceive(_ image: UIImage, for recipeID: String) {
+		view?.display(image, for: recipeID)
 	}
 
 	func didReceiveError(errorText: String) {

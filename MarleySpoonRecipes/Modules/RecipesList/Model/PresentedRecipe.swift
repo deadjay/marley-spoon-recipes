@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct PresentedRecipe {
 	var id: String
@@ -14,6 +15,7 @@ struct PresentedRecipe {
 	var imageURL: String
 	var chefName: String
 	var tags: [String]
+	var image: UIImage?
 }
 
 

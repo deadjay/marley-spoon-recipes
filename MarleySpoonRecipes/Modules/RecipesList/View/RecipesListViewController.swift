@@ -11,7 +11,8 @@ import PureLayout
 protocol RecipesListViewProtocol: AnyObject {
 	func showLoadingState()
 	func showErrorState(with error: String)
-	func display(recipes: [PresentedRecipe])
+	func display(_ recipes: [String: PresentedRecipe])
+	func display(_ image: UIImage, for recipeID: String)
 }
 
 class RecipesListViewController: UIViewController {
@@ -19,7 +20,7 @@ class RecipesListViewController: UIViewController {
 	// MARK: - Private Properties
 
 	private let presenter: RecipesListPresenterProtocol
-	private var recipes = [PresentedRecipe]()
+	private var recipes = [String: PresentedRecipe]()
 
 	private let collectionViewLayout: UICollectionViewFlowLayout
 	private let collectionView: UICollectionView
@@ -72,8 +73,13 @@ extension RecipesListViewController: RecipesListViewProtocol {
 	func showErrorState(with error: String) {
 
 	}
-	func display(recipes: [PresentedRecipe]) {
+	func display(_ recipes: [String: PresentedRecipe]) {
+		self.recipes = recipes
+		collectionView.reloadData()
+	}
 
+	func display(_ image: UIImage, for recipeID: String) {
+		recipes[recipeID]?.image = image
 	}
 }
 
@@ -87,7 +93,10 @@ extension RecipesListViewController: UICollectionViewDataSource {
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		return UICollectionViewCell()
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reuseID", for: indexPath)
+
+		cell.backgroundColor = .themeYellow
+		return cell
 	}
 }
 

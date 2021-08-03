@@ -40,38 +40,23 @@ class DetailRecipe: UIView, NibLoadableView {
 	// MARK: - Functions
 
 	func configure(for presentedRecipe: PresentedRecipe) {
-		backgroundColor = .themeYellow
-		layer.cornerRadius = 3
-
-		descriptionBackgrundView.backgroundColor = .themeBlack
-		descriptionBackgrundView.layer.cornerRadius = 2
-
 		imageView.image = presentedRecipe.image
-		imageView.layer.cornerRadius = 9
 		titleLabel.text = presentedRecipe.title
 		chefNamePrefixLabel.text = "by: "
 		chefNameLabel.text = presentedRecipe.chefName
-
 		descriptionLabel.text = presentedRecipe.description
-		descriptionLabel.textColor = .themeWhite
-
-		imageView.contentMode = .scaleAspectFit
-
-		titleLabel.numberOfLines = 0
-		titleLabel.lineBreakMode = .byWordWrapping
-
-		descriptionLabel.numberOfLines = 0
-		descriptionLabel.lineBreakMode = .byWordWrapping
-
-		tagsStackView.backgroundColor = .themeYellow
-		tagsStackView.spacing = 10
 
 		if presentedRecipe.chefName.isEmpty {
 			chefNamePrefixLabel.isHidden = true
 			chefNameLabel.isHidden = true
 		}
 
-		for tag in presentedRecipe.tags {
+		configure(presentedRecipe.tags)
+		customizeUI()
+	}
+
+	private func configure(_ recipeTags: [String]) {
+		for tag in recipeTags {
 			let label = UILabel()
 			label.font = UIFont.systemFont(ofSize: 14)
 			label.clipsToBounds = true
@@ -81,5 +66,26 @@ class DetailRecipe: UIView, NibLoadableView {
 			label.backgroundColor = .themeGreen
 			tagsStackView.addArrangedSubview(label)
 		}
+	}
+
+	private func customizeUI() {
+		backgroundColor = .themeYellow
+		layer.cornerRadius = 3
+
+		descriptionBackgrundView.backgroundColor = .themeBlack
+		descriptionBackgrundView.layer.cornerRadius = 2
+
+		imageView.contentMode = .scaleAspectFit
+		imageView.layer.cornerRadius = 9
+
+		titleLabel.numberOfLines = 0
+		titleLabel.lineBreakMode = .byWordWrapping
+
+		descriptionLabel.textColor = .themeWhite
+		descriptionLabel.numberOfLines = 0
+		descriptionLabel.lineBreakMode = .byWordWrapping
+
+		tagsStackView.backgroundColor = .themeYellow
+		tagsStackView.spacing = 10
 	}
 }

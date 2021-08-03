@@ -28,4 +28,10 @@ class MainCoordinator {
 
 		navigationController.present(detailRecipeViewController, animated: true, completion: nil)
 	}
+
+	func displayErrorAlert(with message: String, retryAction: @escaping ()->()) {
+		AlertFactory.displayErrorAlert(with: message,
+									   presentingController: navigationController,
+									   retryAction: retryAction)
+	}
 }

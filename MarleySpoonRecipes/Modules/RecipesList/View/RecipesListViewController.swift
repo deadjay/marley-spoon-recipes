@@ -26,6 +26,8 @@ class RecipesListViewController: UIViewController {
 
 	private let collectionViewLayout: UICollectionViewFlowLayout
 	private let collectionView: UICollectionView
+	private let activityIndicator = UIActivityIndicatorView(style: .large)
+	private let refreshControl = UIRefreshControl()
 
 	// MARK: - Construction
 
@@ -40,6 +42,7 @@ class RecipesListViewController: UIViewController {
 
 		setupLayout()
 		setupCollectionView()
+		configureActivityIndicator()
 
 		title = "Marley Spoon Recipes"
 	}
@@ -53,6 +56,8 @@ class RecipesListViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+		refreshControl.addTarget(self, action: #selector(refreshDataTriggered(_:)), for: .valueChanged)
+		collectionView.refreshControl = refreshControl
 		presenter.loadAllRecipes()
 	}
 
@@ -84,20 +89,43 @@ class RecipesListViewController: UIViewController {
 		let cellNib = RecipesListCollectionViewCell.loadNib()
 		collectionView.register(cellNib, forCellWithReuseIdentifier: RecipesListCollectionViewCell.reuseIdentifier)
 	}
+
+	private func configureActivityIndicator() {
+		activityIndicator.hidesWhenStopped = true
+		activityIndicator.color = .themeYellow
+		activityIndicator.backgroundColor = .themeBlack
+
+		view.addSubview(activityIndicator)
+		activityIndicator.autoCenterInSuperview()
+	}
+
+	// MARK: - Actions
+
+	@objc private func refreshDataTriggered(_ sender: Any) {
+		presenter.loadAllRecipes()
+	}
 }
 
 extension RecipesListViewController: RecipesListViewProtocol {
 	func showLoadingState() {
-
+		activityIndicator.startAnimating()
 	}
 
 	func showErrorState(with error: String) {
+		activityIndicator.stopAnimating()
+		refreshControl.endRefreshing()
 
+		coordinator?.displayErrorAlert(with: error, retryAction: {
+			self.presenter.loadAllRecipes()
+		})
 	}
 
 	func display(_ recipesList: PresentedRecipesList) {
 		self.recipesList = recipesList
+
 		collectionView.reloadData()
+		activityIndicator.stopAnimating()
+		refreshControl.endRefreshing()
 	}
 
 	func display(_ image: UIImage, for recipeID: String) {
@@ -119,9 +147,9 @@ extension RecipesListViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		var cell: RecipesListCollectionViewCell?
 
-		if let dequeudCell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipesListCollectionViewCell.reuseIdentifier,
+		if let dequedCell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipesListCollectionViewCell.reuseIdentifier,
 																for: indexPath) as? RecipesListCollectionViewCell {
-			cell = dequeudCell
+			cell = dequedCell
 		} else {
 			cell = RecipesListCollectionViewCell.loadFromNib() as? RecipesListCollectionViewCell
 		}

@@ -13,9 +13,8 @@ class RecipesListBuilder {
 		let recipesService = RecipeService(apiManager: APIManager.sharedInstance)
 		let presenter = RecipesListPresenter(recipeService: recipesService)
 		let viewController = RecipesListViewController(presenter: presenter)
-		let navigationController = RecipesNavigationController(rootViewController: viewController)
 		presenter.view = viewController
 
-		return navigationController
+		return viewController
 	}
 }

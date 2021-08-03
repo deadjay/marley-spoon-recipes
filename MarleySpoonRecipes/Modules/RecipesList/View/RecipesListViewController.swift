@@ -17,6 +17,8 @@ protocol RecipesListViewProtocol: AnyObject {
 
 class RecipesListViewController: UIViewController {
 
+	weak var coordinator: MainCoordinator?
+
 	// MARK: - Private Properties
 
 	private let presenter: RecipesListPresenterProtocol
@@ -38,6 +40,8 @@ class RecipesListViewController: UIViewController {
 
 		setupLayout()
 		setupCollectionView()
+
+		title = "Marley Spoon Recipes"
 	}
 
 	required init?(coder: NSCoder) {
@@ -131,10 +135,15 @@ extension RecipesListViewController: UICollectionViewDataSource {
 }
 
 extension RecipesListViewController: UICollectionViewDelegate {
-
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		if let recipe = recipesList?.recipe(at: indexPath.row) {
+			coordinator?.openDetailRecipe(for: recipe)
+		}
+	}
 }
 
 extension RecipesListViewController: UICollectionViewDelegateFlowLayout {
+
 	override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
 		return CGSize(width: collectionView.bounds.width - 15, height: 200)
 	}

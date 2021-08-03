@@ -21,7 +21,11 @@ class RecipesNavigationController: UINavigationController {
 	init() {
 		super.init(nibName: nil, bundle: nil)
 
-		navigationBar.topItem?.title = "Marley Spoon Recipes"
+	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+
 		navigationBar.isTranslucent = false
 		navigationBar.backgroundColor = .themeWhite
 		navigationBar.tintColor = .themeBlack

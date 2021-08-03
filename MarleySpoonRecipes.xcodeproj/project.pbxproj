@@ -15,9 +15,10 @@
 		450CD18C26B8D4F0005E27D6 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450CD18B26B8D4F0005E27D6 /* Asset.swift */; };
 		450CD18E26B8D517005E27D6 /* SysContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450CD18D26B8D517005E27D6 /* SysContainer.swift */; };
 		450CD19026B8D528005E27D6 /* IDContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450CD18F26B8D528005E27D6 /* IDContainer.swift */; };
+		450CD19426B8E041005E27D6 /* RecipesListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450CD19326B8E041005E27D6 /* RecipesListBuilder.swift */; };
 		456938ED26B6087600A731F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456938EC26B6087600A731F7 /* AppDelegate.swift */; };
 		456938EF26B6087600A731F7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456938EE26B6087600A731F7 /* SceneDelegate.swift */; };
-		456938F126B6087600A731F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456938F026B6087600A731F7 /* ViewController.swift */; };
+		456938F126B6087600A731F7 /* RecipesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456938F026B6087600A731F7 /* RecipesListViewController.swift */; };
 		456938F626B6087A00A731F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 456938F526B6087A00A731F7 /* Assets.xcassets */; };
 		456938F926B6087A00A731F7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 456938F726B6087A00A731F7 /* LaunchScreen.storyboard */; };
 		4569390426B6087A00A731F7 /* MarleySpoonRecipesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4569390326B6087A00A731F7 /* MarleySpoonRecipesTests.swift */; };
@@ -52,10 +53,11 @@
 		450CD18B26B8D4F0005E27D6 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		450CD18D26B8D517005E27D6 /* SysContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SysContainer.swift; sourceTree = "<group>"; };
 		450CD18F26B8D528005E27D6 /* IDContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDContainer.swift; sourceTree = "<group>"; };
+		450CD19326B8E041005E27D6 /* RecipesListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesListBuilder.swift; sourceTree = "<group>"; };
 		456938E926B6087600A731F7 /* MarleySpoonRecipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarleySpoonRecipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		456938EC26B6087600A731F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		456938EE26B6087600A731F7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		456938F026B6087600A731F7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		456938F026B6087600A731F7 /* RecipesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesListViewController.swift; sourceTree = "<group>"; };
 		456938F526B6087A00A731F7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		456938F826B6087A00A731F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		456938FA26B6087A00A731F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -119,7 +121,9 @@
 		450CD18226B8AEE0005E27D6 /* RecipesList */ = {
 			isa = PBXGroup;
 			children = (
-				450CD18426B8AF3F005E27D6 /* RecipesListPresenter.swift */,
+				450CD19226B8DF16005E27D6 /* Model */,
+				450CD19126B8DF12005E27D6 /* View */,
+				450CD19326B8E041005E27D6 /* RecipesListBuilder.swift */,
 			);
 			path = RecipesList;
 			sourceTree = "<group>";
@@ -137,6 +141,22 @@
 				450CD18726B8C1AF005E27D6 /* RecipeService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		450CD19126B8DF12005E27D6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				456938F026B6087600A731F7 /* RecipesListViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		450CD19226B8DF16005E27D6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				450CD18426B8AF3F005E27D6 /* RecipesListPresenter.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		456938E026B6087600A731F7 = {
@@ -169,7 +189,6 @@
 				45D9EE1826B60D5A00E3A118 /* Resources */,
 				456938EC26B6087600A731F7 /* AppDelegate.swift */,
 				456938EE26B6087600A731F7 /* SceneDelegate.swift */,
-				456938F026B6087600A731F7 /* ViewController.swift */,
 			);
 			path = MarleySpoonRecipes;
 			sourceTree = "<group>";
@@ -349,8 +368,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				450CD18A26B8D4DC005E27D6 /* Item.swift in Sources */,
-				456938F126B6087600A731F7 /* ViewController.swift in Sources */,
+				456938F126B6087600A731F7 /* RecipesListViewController.swift in Sources */,
 				450CD17D26B8900F005E27D6 /* PlainResult.swift in Sources */,
+				450CD19426B8E041005E27D6 /* RecipesListBuilder.swift in Sources */,
 				450CD18C26B8D4F0005E27D6 /* Asset.swift in Sources */,
 				450CD19026B8D528005E27D6 /* IDContainer.swift in Sources */,
 				456938ED26B6087600A731F7 /* AppDelegate.swift in Sources */,

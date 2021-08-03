@@ -8,7 +8,7 @@
 import Foundation
 
 protocol RecipeServiceDelegate: AnyObject {
-	func didReceive(recipes: [PlainRecipe], assets: [Asset])
+	func didReceive(recipes: [Recipe], assets: [Asset])
 	func didReceiveError(errorText: String)
 }
 
@@ -47,7 +47,7 @@ class RecipeService {
 			return
 		}
 
-		let filteredItems = result.items.filter { $0.contentType?.sys.id == "recipe" }
+		let filteredItems = result.items.filter { $0.contentType.sys.id == "recipe" }
 		let recipes = filteredItems.map { $0.fields }
 
 		let recipeAssetIDsSet = Set(recipes.map { $0.photo?.sys.id ?? "" })

@@ -8,7 +8,7 @@
 import Foundation
 
 protocol RecipeServiceDelegate: AnyObject {
-	func didReceive(recipes: [Recipe], assets: [Asset])
+	func didReceive(recipes: [Fields], tags: [Item], chefs: [Item], assets: [Asset])
 	func didReceiveError(errorText: String)
 }
 

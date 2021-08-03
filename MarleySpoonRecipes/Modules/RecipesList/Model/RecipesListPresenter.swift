@@ -28,7 +28,12 @@ class RecipesListPresenter: RecipesListPresenterProtocol {
 }
 
 extension RecipesListPresenter: RecipeServiceDelegate {
-	func didReceive(recipes: [Recipe], assets: [Asset]) {
+	func didReceive(recipes: [Fields], tags: [Item], chefs: [Item], assets: [Asset]) {
+		
+	}
+
+	func didReceive(recipes: [Fields], assets: [Asset]) {
+		var dictionaryAssets = [String: String]()
 
 	}
 

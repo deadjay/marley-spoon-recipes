@@ -10,7 +10,6 @@ import Foundation
 enum APIError: Error {
 	case parse
 	case server(String)
-
 }
 
 typealias APIResult = (Result<Data, APIError>) -> ()

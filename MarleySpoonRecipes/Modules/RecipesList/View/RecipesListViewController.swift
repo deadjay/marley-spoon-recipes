@@ -67,6 +67,7 @@ class RecipesListViewController: UIViewController {
 
 	private func setupCollectionView() {
 		collectionView.backgroundColor = .themeGray
+		collectionView.delaysContentTouches = false
 		collectionView.dataSource = self
 		collectionView.delegate = self
 

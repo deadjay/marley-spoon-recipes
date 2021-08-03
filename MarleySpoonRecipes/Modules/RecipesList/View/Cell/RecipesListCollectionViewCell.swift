@@ -16,7 +16,15 @@ class RecipesListCollectionViewCell: UICollectionViewCell, ReusableView, NibLoad
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var bottomContainerView: UIView!
 
-	// MARK: - View Lifecycle
+	// MARK: - Properties
+
+	override var isHighlighted: Bool {
+		didSet {
+			shrink(down: isHighlighted)
+		}
+	}
+
+	// MARK: - View Lifecycle
 
 	override func awakeFromNib() {
 		super.awakeFromNib()

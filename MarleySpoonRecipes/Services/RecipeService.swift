@@ -49,12 +49,31 @@ class RecipeService {
 			return
 		}
 
-		let filteredItems = result.items.filter { $0.contentType.sys.id == "recipe" }
-		let recipes = filteredItems.map { $0.fields }
+		let photosURLDictionary = Dictionary(uniqueKeysWithValues: result.assets.map{ ($0.id, $0.url) })
+		var allItemsDictionary = [String: PresentedItem]()
+		for item in result.items {
+			if let presentedItem = PresentedItem(contentTypeID: item.contentType.sys.id,
+												 id: item.id,
+												 title: item.fields.title ?? "",
+												 name: item.fields.name ?? "",
+												 description: item.fields.description ?? "",
+												 photoID: item.fields.photo?.sys.id ?? "",
+												 chefID: item.fields.chef?.sys.id ?? "",
+												 tagsIDs: item.fields.tags?.compactMap { $0.sys.id } ?? []) {
+				allItemsDictionary[presentedItem.id] = presentedItem
+			}
+		}
 
-		let recipeAssetIDsSet = Set(recipes.map { $0.photo?.sys.id ?? "" })
-		let linkedRecipeAssets = result.assets.filter { recipeAssetIDsSet.contains($0.id) }
+		for value in allItemsDictionary.values {
+			if value.contentType == .recipe {
+				let presentedRecipe = PresentedRecipe(title: value.title,
+													  description: value.description,
+													  imageURL: photosURLDictionary[value.photoID] ?? "",
+													  chefName: allItemsDictionary[value.chefID]?.name ?? "",
+													  tags: value.tagsIDs.map { allItemsDictionary[$0]?.name ?? "" })
+			}
+		}
 
-		delegate?.didReceive(recipes: recipes, assets: linkedRecipeAssets)
+//		delegate?.didReceive(recipes: [], tags: tagItems, chefs: chefItems, assets: [])
 	}
 }

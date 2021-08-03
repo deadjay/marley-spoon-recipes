@@ -1,11 +1,21 @@
 //
-//  RecipesAPIManager.swift
+//  APIManager.swift
 //  MarleySpoonRecipes
 //
 //  Created by Artem Alekseev on 01.08.2021.
 //
 
 import Foundation
+
+enum APIError: Error {
+	case parseError
+}
+
+typealias APIResult = (Result<Data, APIError>) -> ()
+
+protocol APIManagerProtocol {
+	func getRecipes(completion: @escaping APIResult)
+}
 
 private struct Endpoints {
 	static let baseURL = "https://cdn.contentful.com/"
@@ -17,15 +27,11 @@ private struct Credentials {
 	static let accessToken = "7ac531648a1b5e1dab6c18b0979f822a5aad0fe5f1109829b8a197eb2be4b84c"
 }
 
-class RecipesAPIManager {
-
-	enum APIError: Error {
-		case parseError
-	}
+class APIManager: APIManagerProtocol {
 
 	// MARK: - Properties
 
-	static let sharedInstance = RecipesAPIManager()
+	static let sharedInstance = APIManager()
 
 	// MARK: - Private Properties
 
@@ -39,7 +45,7 @@ class RecipesAPIManager {
 
 	// MARK: - Functions
 
-	func getRecipes(completion: @escaping (Result<Data, APIError>) -> ()) {
+	func getRecipes(completion: @escaping APIResult) {
 		guard var urlComponents = URLComponents(string: assetsURLString) else {
 			return
 		}

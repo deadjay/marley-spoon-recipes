@@ -16,15 +16,23 @@ class DetailRecipe: UIView, NibLoadableView {
 	@IBOutlet weak var chefNameLabel: UILabel!
 	@IBOutlet weak var descriptionLabel: UILabel!
 	@IBOutlet weak var tagsStackView: UIStackView!
+	@IBOutlet weak var descriptionBackgrundView: UIView!
 
 	func configure(for presentedRecipe: PresentedRecipe) {
 		backgroundColor = .themeYellow
+		layer.cornerRadius = 3
+
+		descriptionBackgrundView.backgroundColor = .themeBlack
+		descriptionBackgrundView.layer.cornerRadius = 2
 
 		imageView.image = presentedRecipe.image
+		imageView.layer.cornerRadius = 9
 		titleLabel.text = presentedRecipe.title
 		chefNamePrefixLabel.text = "by: "
 		chefNameLabel.text = presentedRecipe.chefName
+
 		descriptionLabel.text = presentedRecipe.description
+		descriptionLabel.textColor = .themeWhite
 
 		imageView.contentMode = .scaleAspectFit
 
@@ -34,26 +42,23 @@ class DetailRecipe: UIView, NibLoadableView {
 		descriptionLabel.numberOfLines = 0
 		descriptionLabel.lineBreakMode = .byWordWrapping
 
-		tagsStackView.backgroundColor = .themeGray
+		tagsStackView.backgroundColor = .themeYellow
+		tagsStackView.spacing = 10
+
+		if presentedRecipe.chefName.isEmpty {
+			chefNamePrefixLabel.isHidden = true
+			chefNameLabel.isHidden = true
+		}
 
 		for tag in presentedRecipe.tags {
 			let label = UILabel()
-			label.textColor = .themeGreen
+			label.font = UIFont.systemFont(ofSize: 14)
+			label.clipsToBounds = true
+			label.textColor = .themeBlack
+			label.layer.cornerRadius = 4
 			label.text = tag
+			label.backgroundColor = .themeGreen
 			tagsStackView.addArrangedSubview(label)
 		}
-	}
-//
-//	override func awakeFromNib() {
-//		super.awakeFromNib()
-//
-//	}
-//
-//	required init?(coder: NSCoder) {
-//		super.init(coder: coder)
-//	}
-
-	private func setupLayout() {
-
 	}
 }

@@ -14,6 +14,7 @@ class DetailRecipeViewController: UIViewController {
 	private let detailRecipeView: DetailRecipe
 	private let contentView: UIView
 	private let dismissButton: UIButton
+	private let titleLabel: UILabel
 
 	init(presentedRecipe: PresentedRecipe) {
 		self.scrollView = UIScrollView()
@@ -21,14 +22,23 @@ class DetailRecipeViewController: UIViewController {
 		self.detailRecipeView = DetailRecipe.loadFromNib()
 		self.contentView = UIView()
 		self.dismissButton = UIButton(type: .close)
-
+		titleLabel = UILabel()
 
 		super.init(nibName: nil, bundle: nil)
 
-//		dismissButton.setTitle("Dismiss", for: .normal)
+		titleLabel.text = "Recipe Details"
+		titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+		titleLabel.contentMode = .center
+
+		view.addSubview(titleLabel)
+
+		view.backgroundColor = .themeGray
 		dismissButton.addTarget(self, action: #selector(dismissViewController), for: .touchUpInside)
+		dismissButton.tintColor = .themeBlack
+		dismissButton.backgroundColor = .themeGray
 
 		view.addSubview(scrollView)
+		view.addSubview(dismissButton)
 		scrollView.addSubview(contentView)
 		contentView.addSubview(detailRecipeView)
 
@@ -45,18 +55,19 @@ class DetailRecipeViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		title = "Recipe Details"
 		view.backgroundColor = .themeWhite
 	}
 
 	// MARK: Private Functions
 
 	private func setupLayout() {
-		view.addSubview(dismissButton)
 		dismissButton.autoPinEdge(toSuperviewEdge: .top, withInset: 20)
-		dismissButton.autoPinEdge(toSuperviewEdge: .right, withInset: 20)
+		dismissButton.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
 
-		scrollView.autoPinEdge(.top, to: .bottom, of: dismissButton, withOffset: 20)
+		titleLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 25)
+		titleLabel.autoAlignAxis(toSuperviewAxis: .vertical)
+
+		scrollView.autoPinEdge(.top, to: .bottom, of: dismissButton, withOffset: 10)
 		scrollView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
 		contentView.autoMatch(.width, to: .width, of: scrollView)
 		contentView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)

@@ -26,6 +26,6 @@ class MainCoordinator {
 		let builder = DetailRecipeBuilder(presentedRecipe: presentedRecipe)
 		let detailRecipeViewController = builder.build()
 
-		navigationController.pushViewController(detailRecipeViewController, animated: true)
+		navigationController.present(detailRecipeViewController, animated: true, completion: nil)
 	}
 }

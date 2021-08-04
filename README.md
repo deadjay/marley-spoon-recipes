@@ -17,4 +17,5 @@ A simple iOS App which connects to `cdn.contentful.com` server and displays reci
 - Pods: `PureLayout` for autolayout in code and `.xib` for autolayout on-screen
 - `URLSession` for Networking
 - `Decodable` for deserializing
+- MVP as a architectural approach
 - Also: one Coordinator, one NavigationController, two Unit Tests and some UIKit extensions

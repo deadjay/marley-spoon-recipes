@@ -1,3 +1,4 @@
+![180](https://user-images.githubusercontent.com/15157565/128105299-f824d830-80db-40c6-bf1b-6252ef2933bb.png)
 # Marley Spoon Recipes
 A test task / app example for Marley Spoon Co.
 A simple iOS App which connects with `cdn.contentful.com` server and displays recipes on List and Detailed screens (Modules)

@@ -12,6 +12,10 @@ class RecipeServiceTests: XCTestCase {
 
 	var parsedRecipes = [PresentedRecipe]()
 
+	override func tearDown() {
+		parsedRecipes = []
+	}
+
 	func testPresentedRecipeParsing() {
 		let mockAPIManager = MockAPIManager()
 		let service = RecipeService(apiManager: mockAPIManager)
